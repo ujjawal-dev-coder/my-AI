@@ -172,6 +172,33 @@
         window.open('https://music.youtube.com');
       }
 
+      // MOBILE APP COMMANDS
+
+      else if(command.includes('open whatsapp')) {
+        speak('Opening WhatsApp');
+        window.location.href = 'whatsapp://';
+      }
+
+      else if(command.includes('open instagram')) {
+        speak('Opening Instagram');
+        window.location.href = 'instagram://';
+      }
+
+      else if(command.includes('open telegram')) {
+        speak('Opening Telegram');
+        window.location.href = 'tg://';
+      }
+
+      else if(command.includes('open spotify')) {
+        speak('Opening Spotify');
+        window.location.href = 'spotify://';
+      }
+
+      else if(command.includes('open camera')) {
+        speak('Opening camera');
+        window.location.href = 'camera://';
+      }
+
       else {
         speak('Searching Google for your question');
         window.open(`https://www.google.com/search?q=${command}`);
