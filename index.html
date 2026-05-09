@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voice AI Assistant</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      overflow: hidden;
+      color: white;
+    }
+
+    .container {
+      width: 400px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 25px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    .orb {
+      width: 140px;
+      height: 140px;
+      margin: 20px auto;
+      border-radius: 50%;
+      background: radial-gradient(circle, #38bdf8, #2563eb);
+      box-shadow: 0 0 50px #38bdf8;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.08);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      background: #38bdf8;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+      transform: scale(1.05);
+    }
+
+    #output {
+      margin-top: 25px;
+      font-size: 18px;
+      min-height: 60px;
+      padding: 10px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>AI Assistant</h1>
+    <p>Voice Command Controlled Assistant</p>
+
+    <div class="orb"></div>
+
+    <button onclick="startListening()">🎤 Start Listening</button>
+
+    <div id="output">Waiting for command...</div>
+  </div>
+
+  <script>
+    const output = document.getElementById('output');
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+
+    function speak(text) {
+      const speech = new SpeechSynthesisUtterance(text);
+      speech.lang = 'en-US';
+      speech.volume = 1;
+      speech.rate = 1;
+      speech.pitch = 1;
+      window.speechSynthesis.speak(speech);
+    }
+
+    function startListening() {
+      output.innerHTML = 'Listening...';
+      recognition.start();
+    }
+
+    recognition.onresult = function(event) {
+      const command = event.results[0][0].transcript.toLowerCase();
+
+      output.innerHTML = `You said: ${command}`;
+
+      // COMMANDS
+
+      if(command.includes('hello')) {
+        speak('Hello boss, how can I help you?');
+      }
+
+      else if(command.includes('time')) {
+        const time = new Date().toLocaleTimeString();
+        speak('Current time is ' + time);
+      }
+
+      else if(command.includes('open youtube')) {
+        speak('Opening YouTube');
+        window.open('https://www.youtube.com');
+      }
+
+      else if(command.includes('open google')) {
+        speak('Opening Google');
+        window.open('https://www.google.com');
+      }
+
+      else if(command.includes('open chatgpt')) {
+        speak('Opening ChatGPT');
+        window.open('https://chatgpt.com');
+      }
+
+      else if(command.includes('search')) {
+        const searchQuery = command.replace('search', '');
+        speak('Searching for ' + searchQuery);
+        window.open(`https://www.google.com/search?q=${searchQuery}`);
+      }
+
+      else if(command.includes('play music')) {
+        speak('Opening music');
+        window.open('https://music.youtube.com');
+      }
+
+      else {
+        speak('Searching Google for your question');
+        window.open(`https://www.google.com/search?q=${command}`);
+      }
+    }
+
+    recognition.onerror = function() {
+      output.innerHTML = 'Voice recognition error';
+    }
+  </script>
+
+</body>
+</html>
